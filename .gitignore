@@ -1,0 +1,33 @@
+# --- Global & System ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# --- Backend (Python) ---
+backend/__pycache__/
+backend/*.py[cod]
+backend/venv/
+backend/.venv/
+backend/env/
+backend/.env
+backend/.env.local
+backend/artifacts/*
+!backend/artifacts/.gitkeep
+backend/weights/
+backend/gfpgan/weights/
+*.pth
+
+
+# --- Frontend (Node/React) ---
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# --- Project Specific ---
+*.zip

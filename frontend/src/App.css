@@ -1,0 +1,795 @@
+:root {
+  --bg-deep: #050505;
+  --bg-card: #0f0f0f;
+  --accent-gold: #c5a059;
+  --gold-primary: #d4af37;
+  --gold-secondary: #fce205;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  --text-dim: #444444;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(20, 20, 20, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  /* Ensure body takes full viewport but let app-container handle centering */
+  background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #050505 60%);
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+}
+
+#root {
+  width: 100%;
+}
+
+/* --- Layout Centering (Flex Grow Strategy) --- */
+.app-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: relative;
+  /* Justify content space-between pushes footer down if we add it to the flow */
+  /* But here we rely on content-wrapper growing */
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 900px;
+  /* Flex 1 makes this take all available vertical space */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* Center children vertically and horizontally */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 40px;
+  margin: 0 auto;
+}
+
+/* --- Typography --- */
+header {
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 6rem;
+  letter-spacing: -3px;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1;
+  background: linear-gradient(180deg, #fff 0%, #ccc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: var(--accent-gold);
+  margin-top: 1rem;
+  opacity: 0.9;
+}
+
+/* --- Main Content --- */
+.main-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* --- Input Section --- */
+.input-section {
+  width: 100%;
+  max-width: 750px;
+  position: relative;
+  z-index: 20;
+  margin: 0 auto;
+  /* Explicit centering */
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 20px;
+  /* Pill shape */
+  width: 100%;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  /* Needed for absolute positioning context */
+}
+
+/* ... existing focus styles ... */
+.input-wrapper:focus-within {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 15px 50px -10px rgba(212, 175, 55, 0.15);
+  transform: translateY(-2px);
+}
+
+.input-wrapper input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  flex: 1;
+  padding: 0 1.5rem;
+  outline: none;
+  min-width: 0;
+  text-align: center;
+}
+
+.input-wrapper input::placeholder {
+  color: #555;
+  font-weight: 300;
+}
+
+/* Base Button Styles */
+.settings-btn {
+  background: transparent;
+  width: 56px;
+  height: 56px;
+  border: none;
+  color: #666;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+.main-btn {
+  background: var(--text-main);
+  color: #000;
+  border: none;
+  height: 48px;
+  padding: 0 2rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.main-btn:hover:not(:disabled) {
+  background: var(--gold-secondary);
+  box-shadow: 0 0 20px rgba(252, 226, 5, 0.4);
+}
+
+.main-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* --- Result Area --- */
+.result-area {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+.image-container {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 50px 100px -20px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+  line-height: 0;
+  /* Remove potential bottom gap */
+}
+
+.image-container:hover {
+  transform: scale(1.005);
+}
+
+.result-image {
+  display: block;
+  max-width: 100%;
+  min-width: 300px;
+  max-height: 60vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.image-actions {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center bottom;
+}
+
+.image-container:hover .image-actions {
+  opacity: 1;
+  bottom: 30px;
+}
+
+/* Upscale Button */
+.upscale-btn {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.upscale-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* --- Refinement Modal (Floating Card) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  /* Flex for perfect centering of modal */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Noise texture overlay for premium feel */
+.modal-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.modal-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-header h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #888;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  /* Use Flexbox for centering */
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  /* Important: remove default padding */
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Control Groups */
+.control-group {
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.control-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Custom Selectors */
+.model-selector,
+.ratio-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-wrap: wrap;
+}
+
+.model-selector {
+  gap: 4px;
+}
+
+.model-btn,
+.ratio-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  color: #888;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ratio-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.model-btn:hover,
+.ratio-btn:hover {
+  color: #ccc;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.model-btn.active,
+.ratio-btn.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+}
+
+textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  resize: none;
+  font-family: 'Outfit', sans-serif;
+  transition: border-color 0.2s;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* --- Footer / History --- */
+.history-slider-section {
+  width: 100%;
+  margin-top: 40px;
+  /* Default: Flow natively */
+}
+
+.utility-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #aaa;
+  font-size: 0.85rem;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.utility-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin-top: 20px;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-content {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+  padding: 10px 0;
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+.history-card-slide {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.6;
+}
+
+.history-card-slide:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  border-color: #fff;
+}
+
+.history-card-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Utility text classes */
+.text-gold {
+  color: var(--gold-secondary);
+}
+
+/* Animation Utils */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 24px;
+  border-radius: 16px;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow:
+    0 20px 40px -10px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  z-index: 2000;
+  min-width: 300px;
+}
+
+.toast-notification.success {
+  border-left: 3px solid var(--gold-secondary);
+}
+
+.toast-notification.error {
+  border-left: 3px solid #ff4d4d;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.spinner-luxury {
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-top-color: var(--gold-secondary);
+  border-radius: 50%;
+  animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.loading-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: #666;
+}
+
+.step-count {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold-primary);
+}
+
+/* --- New Download Utilities --- */
+
+/* Main Image Top Overlay */
+.image-overlay-top {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-container:hover .image-overlay-top {
+  opacity: 1;
+}
+
+/* Make button larger and more visible */
+.overlay-download-btn {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  /* Thicker border */
+  color: #fff;
+  width: 64px;
+  /* Larger size */
+  height: 64px;
+  /* Larger size */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.overlay-download-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: scale(1.1);
+  border-color: #ffffff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* History Item Overlay */
+.history-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 5;
+}
+
+.history-card-slide:hover .history-overlay {
+  opacity: 1;
+}
+
+.history-download-btn {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.history-download-btn:hover {
+  background: var(--gold-primary);
+  border-color: var(--gold-primary);
+  color: #000;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 16px;
+    align-items: flex-start;
+    /* Better scroll behavior on mobile */
+    justify-content: flex-start;
+    padding-top: 40px;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 6px;
+  }
+
+  .content-wrapper {
+    gap: 30px;
+    width: 100%;
+  }
+
+  .input-section {
+    width: 100%;
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 24px;
+  }
+
+  .input-wrapper input {
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 1rem;
+  }
+
+  .settings-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    margin: 0;
+    width: 32px;
+    height: 32px;
+  }
+
+  .main-btn {
+    width: 100%;
+    height: 44px;
+  }
+
+  .result-image {
+    min-width: 100%;
+    max-height: 50vh;
+  }
+
+  .modal-content {
+    padding: 24px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .ratio-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Stack utility buttons */
+  .history-slider-section>div:first-child {
+    flex-wrap: wrap;
+  }
+
+  .utility-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* On mobile, always show the download button since there is no hover */
+  .image-overlay-top {
+    opacity: 1;
+  }
+
+  .image-actions {
+    opacity: 1;
+    bottom: 20px !important;
+  }
+}
