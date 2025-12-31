@@ -9,6 +9,8 @@
 ![React](https://img.shields.io/badge/react-18-61DAFB)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.95%2B-009688)
 
+![Features](preview.png)
+
 **A privacy-first, portfolio-grade AI Image Generation Studio.**  
 *Ephemeral Storage • Hardware Semaphore Queue • Headless UI Architecture • PWA Support*
 
